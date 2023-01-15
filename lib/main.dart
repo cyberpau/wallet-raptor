@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './transaction.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +14,18 @@ class MyApp extends StatelessWidget {
         't1', 'Transportation', 99.9, DateTime.now(), 'Lucena to Padre Burgos'),
     Transaction('t2', 'Food', 10.9, DateTime.now(), 'Bonchon'),
     Transaction('t3', 'Grocery', 150.9, DateTime.now(), ''),
+    Transaction(
+        't1', 'Transportation', 99.9, DateTime.now(), 'Lucena to Padre Burgos'),
+    Transaction('t2', 'Food', 10.9, DateTime.now(), 'Bonchon'),
+    Transaction('t3', 'Grocery', 150.9, DateTime.now(), ''),
+    Transaction(
+        't1', 'Transportation', 99.9, DateTime.now(), 'Lucena to Padre Burgos'),
+    Transaction('t2', 'Food', 10.9, DateTime.now(), 'Bonchon'),
+    Transaction('t3', 'Grocery', 150.9, DateTime.now(), ''),
   ];
+
+  final titleControler = TextEditingController();
+  final amountControler = TextEditingController();
 
   // This widget is the root of your application.
   @override
@@ -32,15 +44,74 @@ class MyApp extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Charts
-            const SizedBox(
+            Container(
               height: 100,
-              child: Text('Charts'),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1,
+                ),
+              ),
+              margin: const EdgeInsets.all(5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('Charts'),
+                ],
+              ),
+            ),
+            // Accounts
+            // Container(
+            //   height: 100,
+            //   decoration: BoxDecoration(
+            //     border: Border.all(
+            //       color: Colors.black,
+            //       width: 1,
+            //     ),
+            //   ),
+            //   margin: const EdgeInsets.all(5),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: const [
+            //       Text('Accounts'),
+            //     ],
+            //   ),
+            // ),
+            Card(
+              elevation: 5,
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Title',
+                    ),
+                    controller: titleControler,
+                  ),
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Amount',
+                    ),
+                    controller: amountControler,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // ignore: avoid_print
+                      print(titleControler.text);
+                      // ignore: avoid_print
+                      print(amountControler.text);
+                    },
+                    child: const Text('Add Transaction'),
+                  ),
+                ],
+              ),
             ),
             // Transaction List
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: (transactions.map(
-                (tx) => Card(
+                (tx) => Container(
+                  margin: const EdgeInsets.fromLTRB(5, 1, 5, 1),
+                  padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
                       // Category Icon Column
@@ -50,8 +121,9 @@ class MyApp extends StatelessWidget {
                       ),
                       // Details Column
                       Expanded(
-                        flex: 5,
-                        child: Row(
+                        flex: 6,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               tx.title,
@@ -59,18 +131,29 @@ class MyApp extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text(tx.note),
+                            Text(
+                              tx.note,
+                              style: const TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       // Price Column
                       Expanded(
-                        flex: 4,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(tx.amount.toString()),
-                            Text(tx.date.toLocal().timeZoneName),
+                            Text(
+                              'PHP ${tx.amount}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(DateFormat('MM/dd/yyyy').format(tx.date)),
                           ],
                         ),
                       ),
