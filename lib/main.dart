@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import './transaction.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
+  final List<Transaction> transactions = [
+    Transaction(
+        't1', 'Transportation', 99.9, DateTime.now(), 'Lucena to Padre Burgos'),
+    Transaction('t2', 'Food', 10.9, DateTime.now(), 'Bonchon'),
+    Transaction('t3', 'Grocery', 150.9, DateTime.now(), ''),
+  ];
 
   // This widget is the root of your application.
   @override
@@ -23,13 +30,55 @@ class MyApp extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            SizedBox(
+          children: [
+            // Charts
+            const SizedBox(
+              height: 100,
               child: Text('Charts'),
             ),
-            SizedBox(
-              child: Text('Transactions'),
-            )
+            // Transaction List
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: (transactions.map(
+                (tx) => Card(
+                  child: Row(
+                    children: [
+                      // Category Icon Column
+                      const Expanded(
+                        flex: 1,
+                        child: Icon(Icons.money),
+                      ),
+                      // Details Column
+                      Expanded(
+                        flex: 5,
+                        child: Row(
+                          children: [
+                            Text(
+                              tx.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(tx.note),
+                          ],
+                        ),
+                      ),
+                      // Price Column
+                      Expanded(
+                        flex: 4,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(tx.amount.toString()),
+                            Text(tx.date.toLocal().timeZoneName),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )).toList(),
+            ),
           ],
         ),
       ),
